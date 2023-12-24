@@ -1,0 +1,27 @@
+# Compiled Object files, Static and Dynamic libs (Shared Objects)
+*.o
+*.a
+*.so
+
+# Folders
+_obj
+_test
+
+# Go specific files
+*.test
+*.prof
+*.cover
+*.out
+*.exe
+*.test
+*.test.out
+*.testmain.go
+
+# Binaries
+main
+velov-widget-api
+
+# Environment
+*.env
+!*.sample.env
+
