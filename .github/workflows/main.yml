@@ -1,0 +1,41 @@
+on: [push]
+
+jobs:
+  build-and-deploy:
+    runs-on: self-hosted
+    permissions:
+      contents: read
+      packages: write
+    env:
+      IMAGE_NAME: "ghcr.io/${{ github.repository_owner }}/${{ github.repository }}:${{ github.sha }}"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Login to GitHub container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: ${{ env.IMAGE_NAME }}
+
+      - name: Setup Rig
+        uses: rigdev/setup-rig@v1
+        with:
+          version: 1.9.6
+          host: ${{ vars.RIG_HOST }}
+          client-id: ${{ vars.RIG_CLIENT_ID }}
+          client-secret: ${{ secrets.RIG_CLIENT_SECRET }}
+
+      - name: Deploy Capsule to production
+        run: |
+          rig deploy ${{ github.repository }} \
+            --project my-project \
+            --environment production \
+            --image ${{ env.IMAGE_NAME }}
