@@ -20,3 +20,8 @@ type BikeStation struct {
 		Capacity int `json:"capacity"`
 	} `json:"totalStands"`
 }
+
+type StationDistance struct {
+	Station  string
+	Distance float64
+}
