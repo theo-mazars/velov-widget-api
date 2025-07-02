@@ -1,9 +1,9 @@
 package main
 
 import (
-	"fmt"
+	"log/slog"
 )
 
 func main() {
-	fmt.Println("🚲 Velov Widget API - Starting")
+	slog.Info("🚲 Velov Widget API - Starting")
 }
