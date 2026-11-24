@@ -26,7 +26,8 @@ FROM gcr.io/distroless/static-debian12:nonroot@sha256:afa5c872c891853ca7fcf1f12c
 WORKDIR /app
 
 COPY --from=builder --chown=root:root --chmod=0555 /out/velov-widget-api ./velov-widget-api
-COPY --chown=root:root --chmod=0444 resources ./resources
+# Owned by root (default) so the nonroot user can read but not modify
+COPY resources ./resources
 
 USER nonroot:nonroot
 
