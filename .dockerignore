@@ -1,0 +1,16 @@
+# Keep the build context minimal and never ship secrets into the image
+.git
+.gitignore
+.dockerignore
+Dockerfile
+docker-compose*.yaml
+docker-compose*.yml
+*.md
+
+# Environment files (contain API_KEY)
+environment/
+**/*.env
+
+# Local build artifacts
+velov-widget-api
+main

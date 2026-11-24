@@ -1,6 +1,7 @@
 package cache
 
 import (
+	"context"
 	"encoding/json"
 	"strconv"
 	"time"
@@ -8,13 +9,13 @@ import (
 	"velov-widget-api/api/types"
 )
 
-func CacheBikeStationData(stationNumber int, station types.BikeStation) (types.BikeStation, error) {
+func CacheBikeStationData(ctx context.Context, stationNumber int, station types.BikeStation) (types.BikeStation, error) {
 	stationJSON, err := json.Marshal(station)
 	if err != nil {
 		return types.BikeStation{}, err
 	}
 
-	err = Client.Set("station:"+strconv.Itoa(stationNumber), stationJSON, 5*time.Minute).Err()
+	err = Client.Set(ctx, "station:"+strconv.Itoa(stationNumber), stationJSON, 5*time.Minute).Err()
 
 	if err != nil {
 		return types.BikeStation{}, err
@@ -23,8 +24,8 @@ func CacheBikeStationData(stationNumber int, station types.BikeStation) (types.B
 	return station, nil
 }
 
-func GetCachedBikeStationData(stationNumber int) (types.BikeStation, error) {
-	val, err := Client.Get("station:" + strconv.Itoa(stationNumber)).Result()
+func GetCachedBikeStationData(ctx context.Context, stationNumber int) (types.BikeStation, error) {
+	val, err := Client.Get(ctx, "station:"+strconv.Itoa(stationNumber)).Result()
 	if err != nil {
 		return types.BikeStation{}, err
 	}

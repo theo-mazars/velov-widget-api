@@ -10,12 +10,19 @@ import (
 
 var Stations []types.StationStruct
 
-func init() {
+// Init loads the static stations list and connects to Redis.
+func Init() {
+	initStations()
+	initRedis()
+}
+
+func initStations() {
 	file, err := os.Open("./resources/stations.json")
 	if err != nil {
 		fmt.Println("❌ Error opening stations.json file")
 		panic(err)
 	}
+	defer file.Close()
 
 	decoder := json.NewDecoder(file)
 	err = decoder.Decode(&Stations)
